@@ -33,10 +33,6 @@ function MyApp({ Component, pageProps }) {
     setLoading(false);
   });
 
-  if (Component.getLayout) {
-    return Component.getLayout(<Component {...pageProps} />);
-  }
-
   return <Component {...pageProps} />;
 }
 
