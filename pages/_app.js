@@ -8,7 +8,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import theme from "./../config/theme";
-import AuthContext, { AuthContextProvider } from "./../store/auth-context";
+// import AuthContext, { AuthContextProvider } from "./../store/auth-context";
 import MainLayout from "../layouts/mainLayout";
 import { Router } from "next/router";
 import Head from "next/head";
@@ -35,26 +35,7 @@ function MyApp({ Component, pageProps }) {
 
   if (Component.getLayout) {
     return (
-      <AuthContextProvider>
-        <ThemeProvider theme={theme}>
-          <ProSidebarProvider>
-            <CssBaseline />
-            <Head>
-              <link
-                key={"nprogress"}
-                rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
-              />
-            </Head>
-            {Component.getLayout(<Component {...pageProps} />)}
-          </ProSidebarProvider>
-        </ThemeProvider>
-      </AuthContextProvider>
-    );
-  }
-
-  return (
-    <AuthContextProvider>
+      // <AuthContextProvider>
       <ThemeProvider theme={theme}>
         <ProSidebarProvider>
           <CssBaseline />
@@ -65,10 +46,29 @@ function MyApp({ Component, pageProps }) {
               href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
             />
           </Head>
-          <MainLayout>{<Component {...pageProps} />}</MainLayout>
+          {Component.getLayout(<Component {...pageProps} />)}
         </ProSidebarProvider>
       </ThemeProvider>
-    </AuthContextProvider>
+      // </AuthContextProvider>
+    );
+  }
+
+  return (
+    // <AuthContextProvider>
+    <ThemeProvider theme={theme}>
+      <ProSidebarProvider>
+        <CssBaseline />
+        <Head>
+          <link
+            key={"nprogress"}
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+          />
+        </Head>
+        <MainLayout>{<Component {...pageProps} />}</MainLayout>
+      </ProSidebarProvider>
+    </ThemeProvider>
+    // </AuthContextProvider>
   );
 }
 
