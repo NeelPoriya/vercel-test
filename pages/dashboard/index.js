@@ -34,7 +34,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const response = await fetch("http://localhost:3000/api/users/verify", {
+  const response = await fetch(`${server}/api/users/verify`, {
     headers: {
       Authorization: `Bearer ${req.cookies.jwt}`,
     },
