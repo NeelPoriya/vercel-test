@@ -6,33 +6,53 @@ import "@fontsource/roboto/300.css";
 import AppHeader from "./../../components/AppHeader";
 import SideNav from "./../../components/SideNav";
 import MainLayout from "../../layouts/mainLayout";
+import server from "../../server";
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   // const authCtx = useContext(AuthContext);
-  const router = useRouter();
 
-  // const isLoggedIn = authCtx.isLoggedIn;
-  const isLoggedIn = true;
-
-  useEffect(() => {
-    if (!isLoggedIn && !localStorage.getItem("token")) {
-      router.push("/login");
-    }
-
-    return () => {
-      // cleanup
-    };
-  }, []);
-
+  let name = "";
+  if (user) {
+    name = user.name;
+  }
   return (
     <>
-      <Typography varient="h6">
-        DashBoard, You are{" "}
-        {/* {isLoggedIn ? `${authCtx.user.name}🙂` : "not logged in🤔"} */}
-      </Typography>
+      <Typography varient="h6">DashBoard, You are {name}</Typography>
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { req, res } = context;
+
+  if (!req.cookies.jwt) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  const response = await fetch("http://localhost:3000/api/users/verify", {
+    headers: {
+      Authorization: `Bearer ${req.cookies.jwt}`,
+    },
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return {
+      props: {
+        user: data.user,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 // Dashboard.getLayout = (page) => <MainLayout>{page}</MainLayout>;
 // Dashboard.getLayout = (page) => <>{page}</>;

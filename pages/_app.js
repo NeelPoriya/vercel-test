@@ -4,8 +4,10 @@ import React from "react";
 import { Router } from "next/router";
 import nProgress from "nprogress";
 import { ProSidebarProvider } from "react-pro-sidebar";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
+import theme from "./../config/theme";
+
 function MyApp({ Component, pageProps }) {
   // const getLayout = Component.getLayout || ((page) => page);
   // const component = getLayout(<Component {...pageProps} />);
@@ -24,8 +26,14 @@ function MyApp({ Component, pageProps }) {
     nProgress.done();
     setLoading(false);
   });
-  if (Component.getLayout)
-    return (
+
+  let cmp = <Component {...pageProps} />;
+  if (Component.getLayout) {
+    cmp = Component.getLayout(<Component {...pageProps} />);
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
       <ProSidebarProvider>
         <CssBaseline />
         <Head>
@@ -35,22 +43,9 @@ function MyApp({ Component, pageProps }) {
             href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
           />
         </Head>
-        {Component.getLayout(<Component {...pageProps} />)}
+        {cmp}
       </ProSidebarProvider>
-    );
-
-  return (
-    <ProSidebarProvider>
-      <CssBaseline />
-      <Head>
-        <link
-          key={"nprogress"}
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
-        />
-      </Head>
-      <Component {...pageProps} />
-    </ProSidebarProvider>
+    </ThemeProvider>
   );
 }
 
