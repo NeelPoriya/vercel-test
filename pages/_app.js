@@ -3,7 +3,9 @@ import "@fontsource/roboto/300.css";
 import React from "react";
 import { Router } from "next/router";
 import nProgress from "nprogress";
-
+import { ProSidebarProvider } from "react-pro-sidebar";
+import { CssBaseline } from "@mui/material";
+import Head from "next/head";
 function MyApp({ Component, pageProps }) {
   // const getLayout = Component.getLayout || ((page) => page);
   // const component = getLayout(<Component {...pageProps} />);
@@ -22,8 +24,34 @@ function MyApp({ Component, pageProps }) {
     nProgress.done();
     setLoading(false);
   });
+  if (Component.getLayout)
+    return (
+      <ProSidebarProvider>
+        <CssBaseline />
+        <Head>
+          <link
+            key={"nprogress"}
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+          />
+        </Head>
+        {Component.getLayout(<Component {...pageProps} />)}
+      </ProSidebarProvider>
+    );
 
-  return <Component {...pageProps} />;
+  return (
+    <ProSidebarProvider>
+      <CssBaseline />
+      <Head>
+        <link
+          key={"nprogress"}
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+        />
+      </Head>
+      <Component {...pageProps} />
+    </ProSidebarProvider>
+  );
 }
 
 export default MyApp;
