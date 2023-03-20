@@ -7,6 +7,7 @@ import { ProSidebarProvider } from "react-pro-sidebar";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
 import theme from "./../config/theme";
+import MainLayout from "../layouts/mainLayout";
 
 function MyApp({ Component, pageProps }) {
   // const getLayout = Component.getLayout || ((page) => page);
@@ -27,7 +28,11 @@ function MyApp({ Component, pageProps }) {
     setLoading(false);
   });
 
-  let cmp = <Component {...pageProps} />;
+  let cmp = (
+    <MainLayout>
+      <Component {...pageProps} />
+    </MainLayout>
+  );
   if (Component.getLayout) {
     cmp = Component.getLayout(<Component {...pageProps} />);
   }

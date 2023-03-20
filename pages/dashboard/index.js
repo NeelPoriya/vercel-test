@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-
+  console.log(server);
   const response = await fetch(`${server}/api/users/verify`, {
     headers: {
       Authorization: `Bearer ${req.cookies.jwt}`,
